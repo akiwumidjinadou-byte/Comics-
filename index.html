@@ -32,8 +32,8 @@ button{border:0;border-radius:14px;padding:9px 10px;font-weight:900;font-size:12
 button:active{transform:scale(.96)}
 button.ghost{background:var(--panel);color:#eef2ff;border:1px solid var(--line)}
 button.small{padding:8px 10px;font-size:12px}
-#installBtn{display:none;background:linear-gradient(135deg,#00e5ff,#8b5cf6);color:#fff}
-#installBtn.show{display:inline-block}
+#installBtn{background:linear-gradient(135deg,#00e5ff,#8b5cf6);color:#fff}
+.noinstall{display:none!important}
 #overlay,#modal,#shop,#themes{position:fixed;inset:0;display:none;place-items:center;background:#04060ee6;backdrop-filter:blur(10px);z-index:30;padding:16px}
 #overlay.show,#modal.show,#shop.show,#themes.show{display:grid}
 .card{width:min(440px,100%);text-align:center;background:linear-gradient(180deg,#131a3d,#0c1128);border:1px solid var(--line);border-radius:24px;padding:22px;max-height:88vh;overflow:auto}
@@ -76,6 +76,7 @@ button.small{padding:8px 10px;font-size:12px}
  <h1 id="title">Cosmic Cargo Sort</h1>
  <p id="text">Touche la voie d’un colis lorsqu’il entre dans la zone lumineuse.<br><br>Un appui attrape <b>un seul colis</b>. Les bombes 💣 doivent être évitées.</p>
  <button onclick="startGame()">🚀 Commencer</button>
+ <button id="installBtn2" class="ghost" style="margin-top:10px" onclick="installApp()">📲 Installer l’app</button>
 </div></div>
 <div id="modal"><div class="card">
  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h2 id="modalTitle" style="margin:0;font-size:21px">Guide</h2><button class="ghost small" onclick="closeAll()">✕</button></div>
@@ -326,8 +327,21 @@ function toggleMusic(){
   $('musicBtn').textContent='🎵 Musique : '+(musicOn?'ON':'OFF');
 }
 document.addEventListener('visibilitychange',()=>{if(!mctx)return;if(document.hidden)mctx.suspend();else mctx.resume()});
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;$('installBtn').classList.add('show')});
-function installApp(){if(!deferredInstall)return;deferredInstall.prompt();deferredInstall.userChoice.finally(()=>{deferredInstall=null;$('installBtn').classList.remove('show')})}
+function installHelp(){
+  const ua=navigator.userAgent,inApp=/TikTok|musical_ly|Instagram|FBAN|FBAV|Snapchat|Line\//i.test(ua),ios=/iPhone|iPad|iPod/i.test(ua);
+  if(inApp)return 'Tu es dans le navigateur de TikTok, Instagram ou Facebook : l’installation n’y est pas possible.<br><br>1. Appuie sur <b>⋯</b> ou <b>⋮</b> en haut ou en bas de l’écran.<br>2. Choisis <b>« Ouvrir dans le navigateur »</b> (Chrome ou Safari).<br>3. Reviens ici et appuie sur <b>📲 Installer l’app</b>.';
+  if(ios)return 'Sur iPhone, ouvre ce lien dans <b>Safari</b>.<br><br>1. Appuie sur le bouton <b>Partager</b> (le carré avec une flèche ⬆️).<br>2. Choisis <b>« Sur l’écran d’accueil »</b>.<br>3. Appuie sur <b>Ajouter</b>.';
+  return '1. Appuie sur le menu <b>⋮</b> de Chrome, en haut à droite.<br>2. Choisis <b>« Installer l’application »</b> ou <b>« Ajouter à l’écran d’accueil »</b>.<br>3. Confirme avec <b>Installer</b>.';
+}
+const isStandalone=()=>(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e});
+function hideInstall(){['installBtn','installBtn2'].forEach(i=>$(i).classList.add('noinstall'))}
+window.addEventListener('appinstalled',hideInstall);
+if(isStandalone())hideInstall();
+function installApp(){
+  if(deferredInstall){deferredInstall.prompt();deferredInstall.userChoice.finally(()=>{deferredInstall=null});return}
+  $('modalTitle').textContent='📲 Installer l’app';$('modalBody').innerHTML=installHelp();openPanel('modal');
+}
 setTheme(theme);hud();setZone();
 $('overlay').classList.add('show');
 </script>
