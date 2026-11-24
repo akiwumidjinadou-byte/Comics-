@@ -79,6 +79,7 @@ button.small{padding:8px 10px;font-size:12px}
  <button id="installBtn2" class="ghost" style="margin-top:10px" onclick="installApp()">📲 Installer l’app</button>
  <div id="netBadge" style="margin-top:12px;font-size:12px;font-weight:800;opacity:.9"></div>
  <button id="giftBtn" class="ghost" style="margin-top:6px"></button>
+ <button id="badgesBtn" class="ghost" style="margin-top:6px">🏅 Badges et amis</button>
 </div></div>
 <div id="modal"><div class="card">
  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h2 id="modalTitle" style="margin:0;font-size:21px">Guide</h2><button class="ghost small" onclick="closeAll()">✕</button></div>
@@ -105,7 +106,7 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
 const THEMES={automne:{name:'🍂 Automne',bg1:'#20140b',bg2:'#3a2410',bgA:'#7a3d10',bgB:'#8a5a12',neon:'#ffb347',fx:'leaf'},hiver:{name:'❄️ Hiver',bg1:'#081726',bg2:'#123049',bgA:'#1d4e75',bgB:'#2b6f9c',neon:'#9fdcff',fx:'snow'},ocean:{name:'🌊 Océan',bg1:'#03151f',bg2:'#062c3d',bgA:'#0a5c7a',bgB:'#0b7d99',neon:'#31e0c8',fx:'bubble'},pluie:{name:'🌧️ Pluie',bg1:'#0b0f18',bg2:'#151d2b',bgA:'#274060',bgB:'#3d5a80',neon:'#7cc4ff',fx:'rain'},espace:{name:'🚀 Espace',bg1:'#070a18',bg2:'#0b0f24',bgA:'#1b2b6b',bgB:'#4a1259',neon:'#00e5ff',fx:'stars'},volcan:{name:'🌋 Volcan',bg1:'#1a0603',bg2:'#300b06',bgA:'#7a1d05',bgB:'#a63d0a',neon:'#ff6b35',fx:'ember'},ouragan:{name:'🌀 Ouragan',bg1:'#061019',bg2:'#0d2030',bgA:'#1b4a5e',bgB:'#2b6f7a',neon:'#8affd8',fx:'wind'}};
 const COLORS=[['#00e5ff','🔵'],['#ff2d95','🔴'],['#ffd23f','🟡'],['#8b5cf6','🟣'],['#22c55e','🟢']];
 const GUIDE=`<b>🎯 Objectif</b><br>Attrape les colis normaux lorsqu’ils entrent dans la grande zone lumineuse.<br><br><b>📱 Comment jouer</b><br>1. Regarde la voie où descend le colis.<br>2. Quand le colis entre dans la zone lumineuse, touche cette même voie.<br>3. Un appui attrape <b>un seul colis</b>.<br>4. Une bonne prise donne des points, des pièces et un combo.<br>5. Si un colis normal sort par le bas, tu perds une vie.<br><br><b>🌀 Niveaux avancés</b><br>À partir du niveau 3, certains colis changent de voie en route, puis ils ondulent. Touche l’endroit où se trouve le colis quand il est dans la zone.<br><br><b>⚠️ Pièges</b><br>Chaque paysage a son propre piège (astéroïde, serpent, méduse, tornade…). Ne le touche pas. Si tu appuies dessus, tu perds une vie. Si elle sort par le bas, ce n’est pas une erreur.<br><br><b>🪙 Bonus</b><br>Touche les bonus pour gagner 10 pièces.<br><br><b>🎵 Musique</b><br>La musique est une chanson danse originale inspirée de la K-pop. Appuie sur « Musique : OFF » pour l’activer et « Musique : ON » pour l’arrêter complètement.`;
-const PRIVACY=`<b>Politique de confidentialité</b><br><br>Cette application <b>Cosmic Cargo Sort</b> respecte la confidentialité des utilisateurs.<br><br><b>1. Données collectées</b><br>L’application peut collecter des données techniques anonymes, telles que le type d’appareil, la version du système, les performances du jeu et les événements publicitaires, afin d’améliorer l’expérience.<br><br><b>2. Publicités</b><br>Ce jeu affiche des publicités fournies par la régie Monetag. Les partenaires publicitaires peuvent utiliser des identifiants publicitaires pour afficher des annonces personnalisées ou non personnalisées, selon les autorisations de l’utilisateur.<br><br><b>3. Données personnelles</b><br>L’application ne demande pas et ne stocke pas de données personnelles sensibles telles que le nom, l’adresse, le numéro de téléphone ou les informations bancaires.<br><br><b>4. Enfants</b><br>L’application est conçue pour être adaptée à un large public. Les parents et tuteurs sont encouragés à superviser l’utilisation par les enfants.<br><br><b>5. Droits des utilisateurs</b><br>L’utilisateur peut demander la suppression de ses données, refuser la personnalisation publicitaire lorsque cette option est disponible, ou contacter le développeur pour toute question liée à la confidentialité.<br><br><b>6. Mises à jour</b><br>Cette politique peut être mise à jour. Toute modification importante sera indiquée dans l’application.`;
+const PRIVACY=`<b>Politique de confidentialité</b><br><br>Cette application <b>Cosmic Cargo Sort</b> respecte la confidentialité des utilisateurs.<br><br><b>1. Données collectées</b><br>L’application peut collecter des données techniques anonymes, telles que le type d’appareil, la version du système, les performances du jeu et les événements publicitaires, afin d’améliorer l’expérience.<br><br><b>2. Publicités</b><br>Ce jeu affiche des publicités fournies par la régie Monetag. Si tu invites des amis, un identifiant anonyme (sans nom ni e-mail) est enregistré sur notre serveur pour compter les invitations. Les partenaires publicitaires peuvent utiliser des identifiants publicitaires pour afficher des annonces personnalisées ou non personnalisées, selon les autorisations de l’utilisateur.<br><br><b>3. Données personnelles</b><br>L’application ne demande pas et ne stocke pas de données personnelles sensibles telles que le nom, l’adresse, le numéro de téléphone ou les informations bancaires.<br><br><b>4. Enfants</b><br>L’application est conçue pour être adaptée à un large public. Les parents et tuteurs sont encouragés à superviser l’utilisation par les enfants.<br><br><b>5. Droits des utilisateurs</b><br>L’utilisateur peut demander la suppression de ses données, refuser la personnalisation publicitaire lorsque cette option est disponible, ou contacter le développeur pour toute question liée à la confidentialité.<br><br><b>6. Mises à jour</b><br>Cette politique peut être mise à jour. Toute modification importante sera indiquée dans l’application.`;
 const arena=document.getElementById('arena'),fx=document.getElementById('fx'),toast=document.getElementById('toast');
 let orbs=[],running=false,paused=false,score=0,lives=3,maxLives=5,level=1,coins=0,combo=0,speed=1.1,spawn=1100,lastSpawn=0,raf=null,last=0,shield=false,x2Until=0,slowUntil=0,theme='espace',lastTap=0;
 let musicAudio=null,musicOn=false;
@@ -214,6 +215,7 @@ function startGame(){
   cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
 }
 function endGame(){
+  onGameFinished();
   running=false;if(score>best)best=score;save();
   $('tag').textContent='MISSION TERMINÉE';$('title').textContent='Score : '+score;
   $('text').innerHTML='Niveau atteint : <b>'+level+'</b><br>Meilleur score : <b>'+best+'</b><br>Pièces : <b>'+Math.floor(coins)+'</b> 🪙';
@@ -391,6 +393,108 @@ function installApp(){
     updateNet(); checkGift(false);
 function giftToast(t){toastMsg(t)}
 function addGiftCoins(a){coins+=a;hud();save()}
+
+/* ===== Parrainage et badges ===== */
+const GAME_NAME = 'Cosmic Cargo';
+const BTN_P = '', BTN_G = 'ghost';
+const FRIEND_TIERS = [[1,'Bronze',50,'circle','#cd7f32'],[5,'Argent',150,'shield','#c0c8d8'],[10,'Or',300,'star','#ffd23f'],[25,'Diamant',600,'diamond','#4fe3ff'],[50,'Couronne',1200,'crown','#b57bff'],[100,'Légende',2500,'trophy','#ff6b6b']];
+const SHARE_TIERS = [[1,'Premier partage',20,'circle','#7ee787'],[5,'Messager',50,'shield','#58d68d'],[10,'Relais',100,'star','#2ecc71'],[25,'Influenceur',200,'diamond','#1abc9c'],[50,'Star',400,'crown','#16a085']];
+function lsGet(k, d) { try { const v = localStorage.getItem(PFX + '_' + k); return v === null ? d : v; } catch (e) { return d; } }
+function lsSet(k, v) { try { localStorage.setItem(PFX + '_' + k, String(v)); } catch (e) {} }
+let pid = lsGet('pid', '');
+if (!/^[A-Z0-9]{8,12}$/.test(pid)) {
+  const al = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', rr = crypto.getRandomValues(new Uint8Array(10));
+  pid = ''; rr.forEach(x => { pid += al[x % al.length]; }); lsSet('pid', pid);
+}
+try {
+  const r = (new URLSearchParams(location.search).get('ref') || '').toUpperCase();
+  if (/^[A-Z0-9]{8,12}$/.test(r) && r !== pid && !lsGet('ref', '')) lsSet('ref', r);
+} catch (e) {}
+function myLink() { return location.origin + '/?ref=' + pid; }
+let shares = Number(lsGet('shares', 0)) || 0, friends = Number(lsGet('friends', 0)) || 0;
+let claimed = { f: [], s: [] };
+try { claimed = JSON.parse(lsGet('claimed', '{"f":[],"s":[]}')) || claimed; } catch (e) {}
+function badgeSvg(shape, color, label, locked) {
+  const c = locked ? '#3a4560' : color;
+  const sh = {
+    circle: '<circle cx="24" cy="24" r="19" fill="' + c + '"/>',
+    shield: '<path d="M24 4 41 10V24C41 34 33 42 24 45 15 42 7 34 7 24V10Z" fill="' + c + '"/>',
+    star: '<polygon points="24,4 29.5,17.5 44,18.5 33,28 36.5,42.5 24,34.5 11.5,42.5 15,28 4,18.5 18.5,17.5" fill="' + c + '"/>',
+    diamond: '<polygon points="24,3 43,20 24,45 5,20" fill="' + c + '"/>',
+    crown: '<path d="M6 38 9 14 18 24 24 9 30 24 39 14 42 38Z" fill="' + c + '"/>',
+    trophy: '<path d="M14 6H34V20C34 27 29 31 24 31 19 31 14 27 14 20Z M21 31H27V38H21Z M15 38H33V43H15Z" fill="' + c + '"/>'
+  }[shape];
+  return '<svg viewBox="0 0 48 48" width="54" height="54">' + sh + '<text x="24" y="' + (shape === 'crown' ? '33' : '26') + '" text-anchor="middle" font-size="13" font-weight="900" fill="' + (locked ? '#7b87a6' : '#0009') + '">' + label + '</text></svg>';
+}
+function checkBadges() {
+  let changed = false;
+  FRIEND_TIERS.forEach((t, i) => { if (friends >= t[0] && !claimed.f.includes(i)) { claimed.f.push(i); changed = true; addGiftCoins(t[2]); giftToast('🏅 Badge ' + t[1] + ' ! +' + t[2] + ' 🪙'); } });
+  SHARE_TIERS.forEach((t, i) => { if (shares >= t[0] && !claimed.s.includes(i)) { claimed.s.push(i); changed = true; addGiftCoins(t[2]); giftToast('🏅 Badge ' + t[1] + ' ! +' + t[2] + ' 🪙'); } });
+  if (changed) lsSet('claimed', JSON.stringify(claimed));
+}
+function registerShare() {
+  const now = Date.now();
+  if (now - (Number(lsGet('lastshare', 0)) || 0) < 30000) return;
+  lsSet('lastshare', now); shares++; lsSet('shares', shares); checkBadges(); renderBadges();
+}
+function inviteText() { return '🎮 Viens jouer à ' + GAME_NAME + ' ! Bats mon score : ' + myLink(); }
+function doInvite() {
+  if (navigator.share) { navigator.share({ text: inviteText() }).then(registerShare).catch(() => {}); }
+  else { window.open('https://wa.me/?text=' + encodeURIComponent(inviteText()), '_blank', 'noopener'); registerShare(); }
+}
+async function refreshFriends() {
+  if (!isOnline()) return;
+  try {
+    const r = await fetch('/api/me?pid=' + pid, { cache: 'no-store' });
+    if (!r.ok) return;
+    const j = await r.json();
+    if (typeof j.count === 'number') { friends = Math.max(friends, j.count); lsSet('friends', friends); checkBadges(); renderBadges(); }
+  } catch (e) {}
+}
+function joinIfNeeded() {
+  const ref = lsGet('ref', '');
+  if (!ref || lsGet('joined', '') || !lsGet('played', '') || !isOnline()) return;
+  fetch('/api/join', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ pid: pid, ref: ref }) })
+    .then(r => r.json()).then(j => { if (j && (j.ok || ['already', 'invalid', 'limit'].includes(j.reason))) lsSet('joined', '1'); }).catch(() => {});
+}
+function onGameFinished() { lsSet('played', '1'); joinIfNeeded(); refreshFriends(); }
+window.addEventListener('online', () => { joinIfNeeded(); refreshFriends(); });
+let badgeOverlay = null;
+function renderBadges() {
+  if (!badgeOverlay) return;
+  const grid = (tiers, val, unit) => '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">' + tiers.map(t => {
+    const ok = val >= t[0];
+    return '<div style="text-align:center;padding:8px 2px;border-radius:12px;background:#22314f;opacity:' + (ok ? 1 : 0.6) + '">' + badgeSvg(t[3], t[4], t[0], !ok) + '<div style="font-size:11px;font-weight:800">' + t[1] + '</div><div style="font-size:10px;color:#a8b2dc">' + (ok ? '✔ +' + t[2] + ' 🪙' : t[0] + ' ' + unit) + '</div></div>';
+  }).join('') + '</div>';
+  badgeOverlay.querySelector('.bd').innerHTML =
+    '<div style="font-size:14px;margin-bottom:10px;line-height:1.6">👥 Amis invités : <b>' + friends + '</b><br>📤 Partages : <b>' + shares + '</b></div>' +
+    '<div style="background:#22314f;border-radius:12px;padding:10px;margin-bottom:12px;font-size:12px;word-break:break-all">' + myLink() + '</div>' +
+    '<div style="display:flex;gap:8px;margin-bottom:14px"><button id="bdInvite" class="' + BTN_P + '" type="button" style="flex:1">📤 Inviter</button><button id="bdCopy" class="' + BTN_G + '" type="button" style="flex:1">Copier</button></div>' +
+    '<div style="font-weight:900;margin-bottom:6px">👥 Ambassadeur</div>' + grid(FRIEND_TIERS, friends, 'amis') +
+    '<div style="font-weight:900;margin:14px 0 6px">📤 Partageur</div>' + grid(SHARE_TIERS, shares, 'partages') +
+    '<div style="font-size:11px;color:#a8b2dc;margin-top:12px;line-height:1.4">Un ami compte quand il joue sa première partie avec ton lien. Pour voir tes amis, il faut être connecté à internet.</div>';
+  badgeOverlay.querySelector('#bdInvite').onclick = doInvite;
+  badgeOverlay.querySelector('#bdCopy').onclick = () => {
+    const t = myLink();
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(() => giftToast('Lien copié !')).catch(() => window.prompt('Copie ton lien :', t));
+    else window.prompt('Copie ton lien :', t);
+    registerShare();
+  };
+}
+function openBadges() {
+  if (badgeOverlay) return;
+  const o = document.createElement('div');
+  o.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:14px';
+  o.innerHTML = '<div style="background:#16233c;color:#eef2ff;border-radius:18px;padding:16px;max-width:380px;width:100%;max-height:90vh;overflow:auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h2 style="margin:0;font-size:20px">🏅 Badges et amis</h2><button id="bdX" class="' + BTN_G + ' small" type="button">✕</button></div><div class="bd"></div></div>';
+  document.body.appendChild(o); badgeOverlay = o;
+  const close = () => { o.remove(); badgeOverlay = null; };
+  o.addEventListener('click', e => { if (e.target === o) close(); });
+  o.querySelector('#bdX').onclick = close;
+  renderBadges(); refreshFriends();
+}
+document.getElementById('badgesBtn').addEventListener('click', openBadges);
+const _ib = document.getElementById('inviteBtn'); if (_ib) _ib.addEventListener('click', doInvite);
+checkBadges(); joinIfNeeded(); refreshFriends();
 setTheme(theme);hud();setZone();
 $('overlay').classList.add('show');
 </script>
