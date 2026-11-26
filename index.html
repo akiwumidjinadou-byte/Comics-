@@ -106,7 +106,7 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
 const THEMES={automne:{name:'🍂 Automne',bg1:'#20140b',bg2:'#3a2410',bgA:'#7a3d10',bgB:'#8a5a12',neon:'#ffb347',fx:'leaf'},hiver:{name:'❄️ Hiver',bg1:'#081726',bg2:'#123049',bgA:'#1d4e75',bgB:'#2b6f9c',neon:'#9fdcff',fx:'snow'},ocean:{name:'🌊 Océan',bg1:'#03151f',bg2:'#062c3d',bgA:'#0a5c7a',bgB:'#0b7d99',neon:'#31e0c8',fx:'bubble'},pluie:{name:'🌧️ Pluie',bg1:'#0b0f18',bg2:'#151d2b',bgA:'#274060',bgB:'#3d5a80',neon:'#7cc4ff',fx:'rain'},espace:{name:'🚀 Espace',bg1:'#070a18',bg2:'#0b0f24',bgA:'#1b2b6b',bgB:'#4a1259',neon:'#00e5ff',fx:'stars'},volcan:{name:'🌋 Volcan',bg1:'#1a0603',bg2:'#300b06',bgA:'#7a1d05',bgB:'#a63d0a',neon:'#ff6b35',fx:'ember'},ouragan:{name:'🌀 Ouragan',bg1:'#061019',bg2:'#0d2030',bgA:'#1b4a5e',bgB:'#2b6f7a',neon:'#8affd8',fx:'wind'}};
 const COLORS=[['#00e5ff','🔵'],['#ff2d95','🔴'],['#ffd23f','🟡'],['#8b5cf6','🟣'],['#22c55e','🟢']];
 const GUIDE=`<b>🎯 Objectif</b><br>Attrape les colis normaux lorsqu’ils entrent dans la grande zone lumineuse.<br><br><b>📱 Comment jouer</b><br>1. Regarde la voie où descend le colis.<br>2. Quand le colis entre dans la zone lumineuse, touche cette même voie.<br>3. Un appui attrape <b>un seul colis</b>.<br>4. Une bonne prise donne des points, des pièces et un combo.<br>5. Si un colis normal sort par le bas, tu perds une vie.<br><br><b>🌀 Niveaux avancés</b><br>À partir du niveau 3, certains colis changent de voie en route, puis ils ondulent. Touche l’endroit où se trouve le colis quand il est dans la zone.<br><br><b>⚠️ Pièges</b><br>Chaque paysage a son propre piège (astéroïde, serpent, méduse, tornade…). Ne le touche pas. Si tu appuies dessus, tu perds une vie. Si elle sort par le bas, ce n’est pas une erreur.<br><br><b>🪙 Bonus</b><br>Touche les bonus pour gagner 10 pièces.<br><br><b>🎵 Musique</b><br>La musique est une chanson danse originale inspirée de la K-pop. Appuie sur « Musique : OFF » pour l’activer et « Musique : ON » pour l’arrêter complètement.`;
-const PRIVACY=`<b>Politique de confidentialité</b><br><br>Cette application <b>Cosmic Cargo Sort</b> respecte la confidentialité des utilisateurs.<br><br><b>1. Données collectées</b><br>L’application peut collecter des données techniques anonymes, telles que le type d’appareil, la version du système, les performances du jeu et les événements publicitaires, afin d’améliorer l’expérience.<br><br><b>2. Publicités</b><br>Ce jeu affiche des publicités fournies par la régie Monetag. Si tu invites des amis, un identifiant anonyme (sans nom ni e-mail) est enregistré sur notre serveur pour compter les invitations. Les partenaires publicitaires peuvent utiliser des identifiants publicitaires pour afficher des annonces personnalisées ou non personnalisées, selon les autorisations de l’utilisateur.<br><br><b>3. Données personnelles</b><br>L’application ne demande pas et ne stocke pas de données personnelles sensibles telles que le nom, l’adresse, le numéro de téléphone ou les informations bancaires.<br><br><b>4. Enfants</b><br>L’application est conçue pour être adaptée à un large public. Les parents et tuteurs sont encouragés à superviser l’utilisation par les enfants.<br><br><b>5. Droits des utilisateurs</b><br>L’utilisateur peut demander la suppression de ses données, refuser la personnalisation publicitaire lorsque cette option est disponible, ou contacter le développeur pour toute question liée à la confidentialité.<br><br><b>6. Mises à jour</b><br>Cette politique peut être mise à jour. Toute modification importante sera indiquée dans l’application.`;
+const PRIVACY=`<b>Politique de confidentialité</b><br><br>Cette application <b>Cosmic Cargo Sort</b> respecte la confidentialité des utilisateurs.<br><br><b>1. Données collectées</b><br>L’application peut collecter des données techniques anonymes, telles que le type d’appareil, la version du système, les performances du jeu et les événements publicitaires, afin d’améliorer l’expérience.<br><br><b>2. Publicités</b><br>Ce jeu affiche des publicités fournies par la régie Monetag. Si tu invites des amis, un identifiant anonyme (sans nom ni e-mail) est enregistré sur notre serveur pour compter les invitations. Si tu choisis un pseudo pour le concours de la semaine, il est visible par les autres joueurs. Les partenaires publicitaires peuvent utiliser des identifiants publicitaires pour afficher des annonces personnalisées ou non personnalisées, selon les autorisations de l’utilisateur.<br><br><b>3. Données personnelles</b><br>L’application ne demande pas et ne stocke pas de données personnelles sensibles telles que le nom, l’adresse, le numéro de téléphone ou les informations bancaires.<br><br><b>4. Enfants</b><br>L’application est conçue pour être adaptée à un large public. Les parents et tuteurs sont encouragés à superviser l’utilisation par les enfants.<br><br><b>5. Droits des utilisateurs</b><br>L’utilisateur peut demander la suppression de ses données, refuser la personnalisation publicitaire lorsque cette option est disponible, ou contacter le développeur pour toute question liée à la confidentialité.<br><br><b>6. Mises à jour</b><br>Cette politique peut être mise à jour. Toute modification importante sera indiquée dans l’application.`;
 const arena=document.getElementById('arena'),fx=document.getElementById('fx'),toast=document.getElementById('toast');
 let orbs=[],running=false,paused=false,score=0,lives=3,maxLives=5,level=1,coins=0,combo=0,speed=1.1,spawn=1100,lastSpawn=0,raf=null,last=0,shield=false,x2Until=0,slowUntil=0,theme='espace',lastTap=0;
 let musicAudio=null,musicOn=false;
@@ -216,6 +216,7 @@ function startGame(){
 }
 function endGame(){
   onGameFinished();
+  submitScore(score);
   running=false;if(score>best)best=score;save();
   $('tag').textContent='MISSION TERMINÉE';$('title').textContent='Score : '+score;
   $('text').innerHTML='Niveau atteint : <b>'+level+'</b><br>Meilleur score : <b>'+best+'</b><br>Pièces : <b>'+Math.floor(coins)+'</b> 🪙';
@@ -335,7 +336,7 @@ function installHelp(){
   const ua=navigator.userAgent,inApp=/TikTok|musical_ly|Instagram|FBAN|FBAV|Snapchat|Line\//i.test(ua),ios=/iPhone|iPad|iPod/i.test(ua);
   if(inApp)return 'Tu es dans le navigateur de TikTok, Instagram ou Facebook : l’installation n’y est pas possible.<br><br>1. Appuie sur <b>⋯</b> ou <b>⋮</b> en haut ou en bas de l’écran.<br>2. Choisis <b>« Ouvrir dans le navigateur »</b> (Chrome ou Safari).<br>3. Reviens ici et appuie sur <b>📲 Installer l’app</b>.';
   if(ios)return 'Sur iPhone, ouvre ce lien dans <b>Safari</b>.<br><br>1. Appuie sur le bouton <b>Partager</b> (le carré avec une flèche ⬆️).<br>2. Choisis <b>« Sur l’écran d’accueil »</b>.<br>3. Appuie sur <b>Ajouter</b>.';
-  return '1. Appuie sur le menu <b>⋮</b> de Chrome, en haut à droite.<br>2. Choisis <b>« Installer l’application »</b> ou <b>« Ajouter à l’écran d’accueil »</b>.<br>3. Confirme avec <b>Installer</b>.';
+  return '1. Appuie sur le menu <b>⋮</b> de Chrome, en haut à droite.<br>2. Choisis <b>« Installer l’application »</b>. Si tu ne la vois pas, choisis <b>« Ajouter à l’écran d’accueil »</b>.<br>3. Confirme avec <b>Installer</b> ou <b>Créer un raccourci</b> : l’icône du jeu apparaît sur ton écran d’accueil.';
 }
 const isStandalone=()=>(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e});
@@ -459,6 +460,42 @@ function joinIfNeeded() {
 }
 function onGameFinished() { lsSet('played', '1'); joinIfNeeded(); refreshFriends(); }
 window.addEventListener('online', () => { joinIfNeeded(); refreshFriends(); });
+
+function submitScore(v) {
+  if (!isOnline() || !(v >= 1)) return;
+  fetch('/api/score', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ pid: pid, game: 'cosmic', value: Math.floor(v) }) }).catch(() => {});
+}
+async function loadContest() {
+  const o = badgeOverlay; if (!o || !isOnline()) return;
+  const box = o.querySelector('#ct'); if (!box) return;
+  try {
+    const rs = await Promise.all([fetch('/api/board?pid=' + pid, { cache: 'no-store' }), fetch('/contest.json?d=' + Date.now(), { cache: 'no-store' }), fetch('/api/scores?game=cosmic&pid=' + pid, { cache: 'no-store' })]);
+    const b = rs[0].ok ? await rs[0].json() : null;
+    let c = {}; try { c = rs[1].ok ? await rs[1].json() : {}; } catch (e) {}
+    let sc = null; try { sc = rs[2] && rs[2].ok ? await rs[2].json() : null; } catch (e) {}
+    if (!b) { box.innerHTML = ''; return; }
+    const nm = x => String(x).replace(/[&<>"]/g, '');
+    box.innerHTML = '<div style="font-weight:900;margin:16px 0 6px">🏆 Concours de la semaine</div>' +
+      '<div style="font-size:12px;opacity:.85;margin-bottom:4px">Du lundi ' + b.start + ' au dimanche ' + b.end + ' à 14 h (heure du Bénin) · Prix : ' + nm(c.prize || 'annoncé bientôt') + '</div><div id="ctd" style="font-size:14px;font-weight:900;margin-bottom:8px"></div>' +
+      (b.top.length ? '<ol style="margin:0 0 8px 18px;padding:0;font-size:14px">' + b.top.map(t => '<li>' + nm(t.name) + ' · <b>' + t.n + '</b> ami' + (t.n > 1 ? 's' : '') + '</li>').join('') + '</ol>' : '<div style="font-size:13px;opacity:.85;margin-bottom:6px">Personne n’est encore classé : invite un ami pour ouvrir le classement.</div>') +
+      '<div style="font-size:13px;margin-bottom:8px">Toi : <b>' + b.me.n + '</b> ami' + (b.me.n > 1 ? 's' : '') + ' cette semaine' + (b.me.n > 0 ? ' · rang <b>' + b.me.rank + '</b>' : '') + '</div>' +
+      '<div style="font-weight:900;margin:12px 0 6px">🎯 Meilleurs scores de la semaine</div>' + (sc && sc.top.length ? '<ol style="margin:0 0 8px 18px;padding:0;font-size:14px">' + sc.top.map(t => '<li>' + nm(t.name) + ' · <b>' + t.v + '</b> pts</li>').join('') + '</ol><div style="font-size:13px;margin-bottom:8px">Toi : <b>' + sc.me.v + '</b> · ' + (sc.me.v > 0 ? 'rang <b>' + sc.me.rank + '</b>' : 'pas encore classé') + '</div>' : '<div style="font-size:13px;opacity:.85;margin-bottom:8px">Aucun score cette semaine : sois le premier !</div>') + '<input id="ctn" maxlength="14" placeholder="Ton pseudo public (3 à 14 caractères)" value="' + nm(b.myname || '') + '" style="width:100%;padding:10px;border-radius:8px;border:1px solid #8886;background:transparent;color:inherit;margin-bottom:6px;box-sizing:border-box">' +
+      '<button id="cts" class="" type="button">Enregistrer mon pseudo</button>' +
+      '<details style="font-size:12px;margin-top:8px"><summary>Règles du concours</summary><p>1. Un ami compte quand il termine sa première partie en ligne avec ton lien.<br>2. Le concours va du lundi 00 h au dimanche 14 h (heure du Bénin). Après, plus aucun score ni invitation n’est compté et le classement est figé. Il repart à zéro le lundi.<br>3. Égalité : le premier à avoir atteint le score est classé devant. En cas d’égalité parfaite, une manche décisive ou un tirage au sort est organisé dans le groupe WhatsApp.<br>4. Les faux comptes sont retirés du classement.<br>5. Le prix est annoncé par l’organisateur et peut changer : aucune somme n’est garantie.<br>6. Participation gratuite, sans obligation d’achat. Ton pseudo est visible par tous les joueurs.</p></details>';
+    const off = b.now - Date.now();
+    const fmt = ms => { const m = Math.floor(ms / 60000), d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60); return (d ? d + ' j ' : '') + h + ' h ' + (m % 60) + ' min'; };
+    const tick = () => { const el = box.querySelector('#ctd'); if (!el) { clearInterval(box._t); return; } const ms = b.deadline - (Date.now() + off); el.textContent = ms > 0 ? '⏳ Fin du concours dans ' + fmt(ms) : '🏁 Concours terminé : le classement final est figé.'; };
+    clearInterval(box._t); tick(); box._t = setInterval(tick, 30000);
+    box.querySelector('#cts').onclick = async function () {
+      const v = box.querySelector('#ctn').value.trim();
+      try {
+        const r = await fetch('/api/name', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ pid: pid, name: v }) });
+        const j = await r.json();
+        this.textContent = j.ok ? '✅ Enregistré' : 'Pseudo refusé (lettres, chiffres, espace, - _ .)';
+      } catch (e) { this.textContent = 'Erreur, réessaie'; }
+    };
+  } catch (e) {}
+}
 let badgeOverlay = null;
 function renderBadges() {
   if (!badgeOverlay) return;
@@ -470,7 +507,7 @@ function renderBadges() {
     '<div style="font-size:14px;margin-bottom:10px;line-height:1.6">👥 Amis invités : <b>' + friends + '</b><br>📤 Partages : <b>' + shares + '</b></div>' +
     '<div style="background:#22314f;border-radius:12px;padding:10px;margin-bottom:12px;font-size:12px;word-break:break-all">' + myLink() + '</div>' +
     '<div style="display:flex;gap:8px;margin-bottom:14px"><button id="bdInvite" class="' + BTN_P + '" type="button" style="flex:1">📤 Inviter</button><button id="bdCopy" class="' + BTN_G + '" type="button" style="flex:1">Copier</button></div>' +
-    '<div style="font-weight:900;margin-bottom:6px">👥 Ambassadeur</div>' + grid(FRIEND_TIERS, friends, 'amis') +
+    '<a href="https://chat.whatsapp.com/FpGjCKBnWRi1k8Lc1bShXK" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none;margin-bottom:14px;padding:12px;border-radius:12px;background:#22c55e;color:#04210f;font-weight:900">💬 Rejoindre le groupe WhatsApp</a>' + '<div style="font-weight:900;margin-bottom:6px">👥 Ambassadeur</div>' + grid(FRIEND_TIERS, friends, 'amis') +
     '<div style="font-weight:900;margin:14px 0 6px">📤 Partageur</div>' + grid(SHARE_TIERS, shares, 'partages') +
     '<div style="font-size:11px;color:#a8b2dc;margin-top:12px;line-height:1.4">Un ami compte quand il joue sa première partie avec ton lien. Pour voir tes amis, il faut être connecté à internet.</div>';
   badgeOverlay.querySelector('#bdInvite').onclick = doInvite;
@@ -485,12 +522,12 @@ function openBadges() {
   if (badgeOverlay) return;
   const o = document.createElement('div');
   o.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:14px';
-  o.innerHTML = '<div style="background:#16233c;color:#eef2ff;border-radius:18px;padding:16px;max-width:380px;width:100%;max-height:90vh;overflow:auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h2 style="margin:0;font-size:20px">🏅 Badges et amis</h2><button id="bdX" class="' + BTN_G + ' small" type="button">✕</button></div><div class="bd"></div></div>';
+  o.innerHTML = '<div style="background:#16233c;color:#eef2ff;border-radius:18px;padding:16px;max-width:380px;width:100%;max-height:90vh;overflow:auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h2 style="margin:0;font-size:20px">🏅 Badges et amis</h2><button id="bdX" class="' + BTN_G + ' small" type="button">✕</button></div><div class="bd"></div><div id="ct"></div></div>';
   document.body.appendChild(o); badgeOverlay = o;
   const close = () => { o.remove(); badgeOverlay = null; };
   o.addEventListener('click', e => { if (e.target === o) close(); });
   o.querySelector('#bdX').onclick = close;
-  renderBadges(); refreshFriends();
+  renderBadges(); refreshFriends(); loadContest();
 }
 document.getElementById('badgesBtn').addEventListener('click', openBadges);
 const _ib = document.getElementById('inviteBtn'); if (_ib) _ib.addEventListener('click', doInvite);
